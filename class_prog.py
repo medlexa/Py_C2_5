@@ -17,12 +17,14 @@ class Dot:
     def __eq__(self,other):
         return self.x==other.x and self.y==other.y
     
-class Board:
-    def __init__(self):
-        self.Bor = []
+class Board(Dot):
+    def __init__(self,Bor):
+        self.Bor = Bor
 
     
 class Player:
 
     def __init__(self):
         self.board = Dot
+
+

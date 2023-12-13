@@ -2,9 +2,11 @@ import random
 import class_prog
 
 
-play = class_prog.Player()
+d = class_prog.Dot(1,2)
 
-play.board().x = 2
-play.board().y = 2
-print(play.board())
+print(d)
+
+f = class_prog.Board(Bor=list(d))
+
+
 
