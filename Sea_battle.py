@@ -1,7 +1,9 @@
+
+
 import random
 import class_prog
 import function
-
+import re 
 
 
 
@@ -21,44 +23,144 @@ def PrintDot(free):
 # print(d)
 
 # f = class_prog.Board(Bor=list(d))
+def create_buffer_around_point(grid, x, y):
+    buffer = []
+    for i in range(max(0, x-1), min(len(grid), x+2)):
+        row = []
+        for j in range(max(0, y-1), min(len(grid[0]), y+2)):
+            row.append(grid[i][j])
+        buffer.append(row)
+    return buffer
+
+def moveD(x,y,player,ap):
+    #player который нападает
+    #ap которого атакуют
+    #должно возвращаться несколько значений 
+    # x,y координаты хода
+    # по какому полю бьют
+    if(len(player.GetBat) > 0):
+        if [x,y] not in player.GetBat:
+            player.batAdd([x,y])
+        else:
+            return "match"
+    else:
+        player.batAdd([x,y])
+    #теперь смотрим папал или нет
+    po = True
+    for a in ap.chip:
+        print (a.live)
+        if [x,y] in a.live:
+            ap.StepP([x,y])
+            po = False
+            print ("Попадание")
+            
+            return "next"
+            
+    
+    if(po):
+        ap.StepMiss([x,y])
+
+        return "out"
+        # for b in a.live:
+        #     if()
+
+def getInpCoord(typ,Ai,P):
+
+    if typ == "ai":
+        while(True):
+            P.PrintBoard()
+            #перебор возможных ходов
+            x,y = function.getRandXY()
+            res = moveD(x,y,Ai,P)
+            if(res == "winai"):
+                return res
+            elif(res == "out"):
+                break
+            
+    else:
+        while(True):
+            Ai.PrintBoard()
+            ih = input("Введите координаты ")
+            if(ih == "exit"):
+                break
+
+            match = re.search(r'[a-g]',ih)
+            match2 = re.search(r'[1-7]',ih)
+
+            if(match is not None and match2 is not None):
+                letters = ['a','b','c','d','e','f','g']
+                x = int(match2[0]) - 1
+                y = letters.index(match[0])
+
+                print (x,y)
+                res = moveD(x,y,P,Ai)
+                
+                if(res == "winpl"):
+                    return "winpl"
+                elif(res == "match"):
+                    print("Вы уже ходили в эту клетку!")
+                elif(res == "out"):
+                    return res
+                    
+            else:
+                print("Введены не верные координаты!")
+            # print (match)
+# Пример использования
+def Game():
+    P = class_prog.Player([3,2,2,1,1,1])
+    Ai = class_prog.Ai([3,2,2,1,1,1])
+
+    P.PrintS()
+    P.PrintBoard()
+    print("-----------------------------------")
+    Ai.PrintBoard()
+    win = True
+    while(win):
+        win2 = getInpCoord("user",Ai,P)
+        
+        if(win2 == "winpl"):
+            print("Поздравляем! Вы обыграли компьютер!")
+            win = False
+
+        win2 = getInpCoord("ai",Ai,P)
+        if(win2 == "winai"):
+            print("Выйграл компьютер!")
+            win = False
+        print (win2)
+
+    return True
+
 
 if __name__ == "__main__":
+    print ("Добро пожаловать в игру Морской бой")
+    print("-----------------------------------")
+    while(Game()):
+        ido = input("Еще партейку? yes no? ")
 
-    # dot = class_prog.Board().Bor3()
-    # print(function.randomShip())
+        if (ido == "no"):
+            break
 
-    # free = [class_prog.Dot(x, y,"-") for x in range(6) for y in range(6)]
-    # print(free[1])
-    # PrintDot(free)
-    
-    # print(type(free))
-    
-    P = class_prog.Player([3,2,2,1,1,1])
-    # print(dir(P.GetShip()[0]))
-
+    # P = class_prog.Player([3,2,2,1,1,1])
+    # Ai = class_prog.Ai([3,2,2,1,1,1])
+    # # print(dir(P.GetShip()[0]))
+    # print(P)
     # print(len(P.GetBoard()))
-    P.PrintP()
     
-    for a in range(0,len(P.GetBoard())):
-        # print(a)
-        for b in range(0,len(P.GetBoard())):
+    # Ai.PrintS()
+    # Ai.PrintAi()
+    
 
-            for c in P.GetShip():
-                for c2 in c.live:
-                    # print(f"c = {c2} getX = {P.GetBoard()[b][a].getX } getY = {P.GetBoard()[b][a].getY }")
-                    if(c2[0] == P.GetBoard()[b][a].getX and c2[1] == P.GetBoard()[b][a].getY):
-                        # print("Попало")
-                        P.GetBoard()[b][a].typ("T")
-                        # print(P.GetBoard()[b][a].get_typ)
-            #print(P.GetBoard()[b][a].getX,P.GetBoard()[b][a].getY)
-    
-    for a in range(0,len(P.GetBoard())):
-        l = []
-        for b in range(0,len(P.GetBoard())):
-            # print(P.GetBoard()[b][a].get_typ)
-            l.append(P.GetBoard()[b][a].get_typ)
-        print(l)
-            # print(P.GetBoard()[b][a].getY)
+    # x,y = function.getRandXY()
+
+    # print(moveD(x,y,Ai))
+    # print(Ai.GetBat)
+    # x,y = function.getRandXY()
+    # print(moveD(x,y,Ai))
+    # print(Ai.GetBat)
+
+
+    # getInpCoord("ai")
+    # getInpCoord("user")
     # for a in P.GetShip():
     #     print (a.get_live())
     # P.PrintP()

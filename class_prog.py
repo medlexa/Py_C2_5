@@ -48,7 +48,6 @@ class Dot:
         
     @property
     def get_typ(self):
-        """I'm the 'x' property."""
         return self.type
 
     
@@ -75,8 +74,18 @@ class Board:
 class Player:
 
     def __init__(self,shipL):
-        self.board = [[Dot(x, y,"-") for x in range(6)] for y in range(6)]
+        self.board = [[Dot(x, y,"-") for x in range(0,7)] for y in range(7)]
         self.chip = function.randomShip(shipL)
+        self.battle = [[]]
+    @property
+    def GetBat(self):
+        return self.battle
+    def batAdd(self, value):
+        h = self.GetBat
+        h.append(value)
+        self.battle = h
+        # self.battle = value
+        
 
     def GetShip(self):
         return self.chip
@@ -86,20 +95,67 @@ class Player:
     def ChekShip(self,chip):
         for a in self.chip:
             print(a)
-
-    def PrintP(self):
-        for a in range(0,len(self.board)):
-            for b in range(0,len(self.board)):
-
-                for c in self.chip:
-                    for c2 in c.live:
-                        if(c2[0] == self.board[b][a].getX and c2[1] == self.board[b][a].getY):
-                            self.board[b][a].typ("T")
-        for a in range(0,len(self.board)):
+    def PrintBoard(self):
+        res = "  | 1 | 2 | 3 | 4 | 5 | 6 | 7"
+        # for a in range(0,len(self.board)):
+        letters = ['a','b','c','d','e','f','g']
+        for i, row in enumerate(self.board):
             l = []
             for b in range(0,len(self.board)):
-                l.append(self.board[b][a].get_typ)
-        print(l)
+                l.append(self.board[b][i].get_typ)
+            res += f"\n{letters[i]} | " + " | ".join(l) + " |"
+        print(res)
+
+    def PrintS(self):
+        # for a in range(0,len(self.board)):
+        #     for b in range(0,len(self.board)):
+
+        for c in self.chip:
+            for c2 in c.live:
+                # print (c2)
+                self.board[c2[0]][c2[1]].typ("T")
+                        # if(c2[0] == self.board[b][a].getX and c2[1] == self.board[b][a].getY):
+                        #     self.board[b][a].typ("T")
+        # res = "  | 1 | 2 | 3 | 4 | 5 | 6 | 7"
+        # # for a in range(0,len(self.board)):
+        # letters = ['a','b','c','d','e','f','g']
+        # for i, row in enumerate(self.board):
+        #     l = []
+        #     for b in range(0,len(self.board)):
+        #         l.append(self.board[b][i].get_typ)
+        #     res += f"\n{letters[i]} | " + " | ".join(l) + " |"
+        # print(res)
+    def StepP(self,a):
+        self.board[a[0]][a[1]].typ("X")
     
+    def StepMiss(self,a):
+        self.board[a[0]][a[1]].typ("T")
+
+
+
+            
+class Ai(Player):
+    def __init__(self,shipL):
+        self.board = [[Dot(x, y,"-") for x in range(0,7)] for y in range(7)]
+        self.chip = function.randomShip(shipL)
+        self.battle = []
+
+    
+
+    def PrintAi(self):
+        self.battle.append([1,3])
+        
+        print(self.battle)
+        for a in self.battle:
+            print(a)
+            for b in self.chip:
+                for c in b.live:
+                    # print(c)
+                    if(a[0] == c[0] and a[1] == c[1]):
+                        print("D[jfds]")
+                        self.board[c[0]][c[1]].typ("V")
+    
+
+        
 
 
