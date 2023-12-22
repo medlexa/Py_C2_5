@@ -165,7 +165,7 @@ def Game():
     while(win):
 
         win2 = getInpCoord("user",Ai,P)
-        print(win2)
+        # print(win2)
         if(win2 == "winpl"):
             print("Поздравляем! Вы обыграли компьютер!")
             win = False
@@ -173,7 +173,7 @@ def Game():
             return False
         
         win2 = getInpCoord("ai",Ai,P)
-        print(win2)
+        # print(win2)
         if(win2 == "winai"):
             print("Выйграл компьютер!")
             win = False
