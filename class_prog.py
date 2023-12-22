@@ -1,12 +1,16 @@
 import function
 #Класс корабля
 class Ship:
-    def __init__(self, lenght, x,y,orient,live):
+    def __init__(self, lenght, x,y,orient,live,koord):
         self.lenght = lenght
         self.x = x
         self.y = y
         self.orient = orient
         self.live = live#может тут хранить массив координат
+        self.koord = koord
+
+    def getCoord(self):
+        return self.koord
 
 
     def get_live(self):
@@ -76,6 +80,7 @@ class Player:
     def __init__(self,shipL):
         self.board = [[Dot(x, y,"-") for x in range(0,7)] for y in range(7)]
         self.chip = function.randomShip(shipL)
+        #массив координат куда стреляли
         self.battle = [[]]
     @property
     def GetBat(self):
@@ -113,7 +118,7 @@ class Player:
         for c in self.chip:
             for c2 in c.live:
                 # print (c2)
-                self.board[c2[0]][c2[1]].typ("T")
+                self.board[c2[0]][c2[1]].typ("☐")
                         # if(c2[0] == self.board[b][a].getX and c2[1] == self.board[b][a].getY):
                         #     self.board[b][a].typ("T")
         # res = "  | 1 | 2 | 3 | 4 | 5 | 6 | 7"
@@ -127,9 +132,13 @@ class Player:
         # print(res)
     def StepP(self,a):
         self.board[a[0]][a[1]].typ("X")
+        if(a not in self.GetBat):
+            self.batAdd(a)
     
     def StepMiss(self,a):
         self.board[a[0]][a[1]].typ("T")
+        if(a not in self.GetBat):
+            self.batAdd(a)
 
 
 
@@ -138,6 +147,7 @@ class Ai(Player):
     def __init__(self,shipL):
         self.board = [[Dot(x, y,"-") for x in range(0,7)] for y in range(7)]
         self.chip = function.randomShip(shipL)
+        #массив координат которые отработаны уже
         self.battle = []
 
     

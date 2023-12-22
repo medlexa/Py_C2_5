@@ -110,7 +110,7 @@ def randomShip(shipL):
                 
             #     print(f"koordM = {koordM}")
 
-                shipPlay.append(class_prog.Ship(a,x,y,orient,koordM))
+                shipPlay.append(class_prog.Ship(a,x,y,orient,koordM,koordM.copy()))
                 # print(shipPlay)
                 break
     
